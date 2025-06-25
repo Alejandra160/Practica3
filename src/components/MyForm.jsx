@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import MyButton from './Mybutton';
 
 function MyForm() {
   const [formData, setFormData] = useState({
@@ -11,52 +12,68 @@ function MyForm() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`✅ Form Submitted:\n${JSON.stringify(formData, null, 2)}`);
+    alert(JSON.stringify(formData, null, 2));
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>Name</label>
-        <input type="text" name="name" onChange={handleChange} />
-      </div>
+      <label>
+        Name:
+        <input type="text" name="name" value={formData.name} onChange={handleChange} />
+      </label>
+      <br />
 
-      <div>
-        <label>Email</label>
-        <input type="email" name="email" onChange={handleChange} />
-      </div>
+      <label>
+        Email:
+        <input type="email" name="email" value={formData.email} onChange={handleChange} />
+      </label>
+      <br />
 
-      <div>
-        <label>Gender</label>
-        <input type="radio" name="gender" value="Male" onChange={handleChange} /> Male
-        <input type="radio" name="gender" value="Female" onChange={handleChange} /> Female
-      </div>
-
-      <div>
-        <label>Country</label>
-        <select name="country" onChange={handleChange}>
-          <option value="">-- Select --</option>
-          <option value="Mexico">Mexico</option>
-          <option value="USA">USA</option>
-        </select>
-      </div>
-
-      <div>
+      <label>
+        Gender:
         <label>
-          <input type="checkbox" name="newsletter" onChange={handleChange} />
-          Subscribe to Newsletter
+          <input type="radio" name="gender" value="male" onChange={handleChange} />
+          Male
         </label>
-      </div>
+        <label>
+          <input type="radio" name="gender" value="female" onChange={handleChange} />
+          Female
+        </label>
+      </label>
+      <br />
 
-      <button type="submit">Submit</button>
+      <label>
+        Country:
+        <select name="country" value={formData.country} onChange={handleChange}>
+          <option value="">-- Select --</option>
+          <option value="mx">Mexico</option>
+          <option value="us">United States</option>
+          <option value="ca">Canada</option>
+        </select>
+      </label>
+      <br />
+
+      <label>
+        <input
+          type="checkbox"
+          name="newsletter"
+          checked={formData.newsletter}
+          onChange={handleChange}
+        />
+        Subscribe to newsletter
+      </label>
+      <br />
+
+      {/* ✅ Botón reutilizable como submit */}
+      <MyButton type="submit" label="Submit Form" />
     </form>
   );
 }
